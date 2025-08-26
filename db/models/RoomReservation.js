@@ -1,9 +1,4 @@
 const mongoose = require('mongoose');
-const { ReservationStatus } = require('../../config/Enum');
-
-
-
-
 
 const roomReservationSchema = new mongoose.Schema(
   {
@@ -22,12 +17,6 @@ const roomReservationSchema = new mongoose.Schema(
     // İsteğe bağlı: kullanıcı bir zaman seçiyorsa
     scheduled_at: { type: Date },
 
-    status: {
-      type: Number,
-      enum: Object.values(ReservationStatus),
-      default: ReservationStatus.PENDING,
-      index: true,
-    },
 
     // Aktiflik bayrağı (tekil indeks için pratik)
     active: {
@@ -50,5 +39,5 @@ roomReservationSchema.index(
 
 module.exports = {
   RoomReservation: mongoose.model('RoomReservation', roomReservationSchema),
-  ReservationStatus,
+
 };

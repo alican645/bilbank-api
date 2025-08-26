@@ -3,6 +3,7 @@ const Response = require('../../lib/Response');
 const Room = require('../../db/models/Room');
 const  validateRoom  = require('../../lib/validateFunctions/validateRoom');
 
+
 exports.createRoom = async (req, res) => {
     let body = req.body;
     try {
@@ -12,11 +13,10 @@ exports.createRoom = async (req, res) => {
             title: body.title.trim(),
             room_type: body.room_type,
             reward: body.reward,
-            entry_fee: body.entryFee,
-            min_users: body.minUsers,
-            max_users: body.maxUsers,
-            // status: _status, // şemadaki defaultu kullanmak istersen yorumda bırak
-            ...(body.status !== undefined ? { status: body.status } : {}),
+            entry_fee: body.entry_fee,
+            max_users: body.max_users,
+            min_users: body.min_users,
+            room_status: body.room_status,
             ...(body.is_open !== undefined ? { is_open: !!body.is_open } : {}),
         });
 

@@ -5,18 +5,20 @@ const Auth = require('../lib/auth')();
 
 const {getRooms} = require('../controllers/rooms/getRooms');
 const {createRoom} = require('../controllers/rooms/createRoom');
-const {reserveRoom} = require('../controllers/rooms/reserveRoom');
+const {reserveRoom} = require('../controllers/roomReservation/reserveRoom');
+const {getActiveReservations} = require('../controllers/roomReservation/getActiveReservations');
+const {getAllReservations} = require('../controllers/roomReservation/getAllReservations');
 
 
 
 
 router.all('*', Auth.authenticate(), (req, res, next) => next());
 
-router.get('/',getRooms)
+router.get('/',getRooms);
+router.get('/getActiveReservations',getActiveReservations);
+router.get('/getAllReservations',getAllReservations);
 
 router.post('/createRoom',createRoom);
-
-
 router.post('/reserveRoom', reserveRoom);
 
 

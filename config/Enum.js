@@ -1,3 +1,5 @@
+const User = require("../db/models/User");
+
 module.exports = {
     HTTP_CODES: {
         OK: 200,
@@ -29,18 +31,25 @@ module.exports = {
         ZUMRUT: 6,
         PALLADYUM: 7       // En üst seviye (örnek isim)
     }),
-    RoomStatus: Object.freeze({
-        WAITING:0,
-        OPEN:1,
-        RUNNING:2,
-        FINISHED:3,
-        CANCELLED:4
-     }),
-     ReservationStatus : Object.freeze({
-        PENDING:0,
-        CONFIRMED:1,
-        CANCELED:2
-     })
+    EntryStatus: Object.freeze({
+        ROOM_APPLICATION_OPEN: 1,      // Oda başvuruya açık (kullanıcı başvuru yapabilir)
+        ROOM_IN_PROGRESS: 2,           // Oda şu an çalışmakta / aktif oyun var
+        ROOM_CLOSED: 3,                // Oda kapalı, giriş yapılamaz
+    }),
+    UserEntryStatus: Object.freeze({
+        User_Waiting: {
+            valueOf: 0,
+            description: "Başvurunuz alındı oda açılınca oyuna girebilirsiniz"
+        },
+        User_Direct_Entry: {
+            valueOf: 1,
+            description: "Lütfent bekleyiniz, odaya giriş yapıyorsunuz"
+        },
+        User_No_Entry: {
+            valueOf: 2,
+            description: "Odaya giriş yapamazsınız"
+        }
 
+    })
 
 }

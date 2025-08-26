@@ -1,6 +1,8 @@
 // models/Room.js
 const mongoose = require("mongoose");
-const { RoomTypes, RoomStatus } = require("../../config/Enum");
+const { RoomTypes,EntryStatus } = require("../../config/Enum");
+
+
 
 const roomSchema = new mongoose.Schema(
   {
@@ -31,37 +33,24 @@ const roomSchema = new mongoose.Schema(
       min: 0,
     },
 
-    min_users: {
-      type: Number,
-      required: true,
-      default: 2,
-      min: 1,
-    },
-
     max_users: {
       type: Number,
       required: true,
-      default: 10,
       min: 1,
     },
 
-    status: {
+    min_users: {
       type: Number,
-      enum: RoomStatus,
-      default: Object.values(RoomStatus),
+      required: true,
+      min: 1,
     },
 
-    is_open: {
-      type: Boolean,
-      default: true,
-      index: true,
+    room_status: {
+      type: Number,
+      enum: Object.values(EntryStatus),
+      required: true,
     },
 
-    user_count: {
-      type: Number,
-      default: 0,
-      min: 0,
-    },
   },
   {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" },
@@ -88,3 +77,4 @@ roomSchema.set("toJSON", {
 });
 
 module.exports = mongoose.model("Room", roomSchema);
+
