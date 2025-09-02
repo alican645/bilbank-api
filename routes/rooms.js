@@ -8,7 +8,9 @@ const {createRoom} = require('../controllers/rooms/createRoom');
 const {reserveRoom} = require('../controllers/roomReservation/reserveRoom');
 const {getActiveReservations} = require('../controllers/roomReservation/getActiveReservations');
 const {getAllReservations} = require('../controllers/roomReservation/getAllReservations');
-
+const {roomIsReserved} = require('../controllers/roomReservation/roomIsReserved');
+const {showRoom} = require('../controllers/roomReservation/showRoom');
+const {joinRoom} = require('../controllers/rooms/joinRoom');
 
 
 
@@ -18,8 +20,12 @@ router.get('/',getRooms);
 router.get('/getActiveReservations',getActiveReservations);
 router.get('/getAllReservations',getAllReservations);
 
-router.post('/createRoom',createRoom);
 router.post('/reserveRoom', reserveRoom);
+router.post('/roomIsReserved',roomIsReserved)
+router.post('/showRoom',showRoom)
+router.post('/joinRoom',joinRoom)
+router.post('/createRoom',createRoom)
+
 
 
 // Rezervasyon iptal (cancel)

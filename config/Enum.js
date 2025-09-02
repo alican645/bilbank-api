@@ -1,4 +1,3 @@
-const User = require("../db/models/User");
 
 module.exports = {
     HTTP_CODES: {
@@ -32,24 +31,16 @@ module.exports = {
         PALLADYUM: 7       // En üst seviye (örnek isim)
     }),
     EntryStatus: Object.freeze({
-        ROOM_APPLICATION_OPEN: 1,      // Oda başvuruya açık (kullanıcı başvuru yapabilir)
-        ROOM_IN_PROGRESS: 2,           // Oda şu an çalışmakta / aktif oyun var
-        ROOM_CLOSED: 3,                // Oda kapalı, giriş yapılamaz
+        WAITING: 0, RUNNING: 1, CLOSED: 2
     }),
-    UserEntryStatus: Object.freeze({
-        User_Waiting: {
-            valueOf: 0,
-            description: "Başvurunuz alındı oda açılınca oyuna girebilirsiniz"
-        },
-        User_Direct_Entry: {
-            valueOf: 1,
-            description: "Lütfent bekleyiniz, odaya giriş yapıyorsunuz"
-        },
-        User_No_Entry: {
-            valueOf: 2,
-            description: "Odaya giriş yapamazsınız"
-        }
-
+    ReservationStatus: Object.freeze({ RESERVED: 0, CANCELLED: 1, FINISHED: 2 }),
+    ANSWER_RESULT: Object.freeze({
+        OK: 'OK',
+        MISSING_PARAMS: 'MISSING_PARAMS',
+        UNAUTHORIZED: 'UNAUTHORIZED',
+        DUPLICATE_ANSWER: 'DUPLICATE_ANSWER',
+        QUESTION_NOT_FOUND: 'QUESTION_NOT_FOUND',
+        SERVER_ERROR: 'SERVER_ERROR',
     })
 
 }

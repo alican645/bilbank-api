@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const { ReservationStatus } = require('../../config/Enum');
+// ReservationStatus = { RESERVED: 0, CANCELLED: 1, FINISHED: 2 }
 
 const roomReservationSchema = new mongoose.Schema(
   {
@@ -14,16 +16,17 @@ const roomReservationSchema = new mongoose.Schema(
       required: true,
       index: true,
     },
-    // İsteğe bağlı: kullanıcı bir zaman seçiyorsa
+
     scheduled_at: { type: Date },
 
-
-    // Aktiflik bayrağı (tekil indeks için pratik)
-    active: {
-      type: Boolean,
-      default: true,
+    status: {
+      type: Number,
+      enum: Object.values(ReservationStatus),
+      default: ReservationStatus.RESERVED,
       index: true,
     },
+
+    joined_at: { type: Date },
   },
   {
     versionKey: false,
@@ -31,13 +34,23 @@ const roomReservationSchema = new mongoose.Schema(
   }
 );
 
-// Aynı kullanıcı aynı odada eşzamanlı birden fazla aktif rezervasyon açamasın
+// Aynı user aynı odada aynı anda sadece 1 RESERVED olabilir
 roomReservationSchema.index(
-  { user: 1, room: 1, active: 1 },
-  { unique: true, partialFilterExpression: { active: true } }
+  { user: 1, room: 1, status: 1 },
+  { unique: true, partialFilterExpression: { status: 0 } } // sadece RESERVED için unique
 );
+
+// JSON çıktısı
+roomReservationSchema.set('toJSON', {
+  virtuals: true,
+  versionKey: false,
+  transform: (_, ret) => {
+    ret.id = ret._id;
+    delete ret._id;
+    return ret;
+  },
+});
 
 module.exports = {
   RoomReservation: mongoose.model('RoomReservation', roomReservationSchema),
-
 };

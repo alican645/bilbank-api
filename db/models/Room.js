@@ -1,7 +1,6 @@
-// models/Room.js
-const mongoose = require("mongoose");
-const { RoomTypes,EntryStatus } = require("../../config/Enum");
-
+const mongoose = require('mongoose');
+const { RoomTypes, EntryStatus } = require('../../config/Enum');
+const CustomError = require('../../lib/CustomError');
 
 
 const roomSchema = new mongoose.Schema(
@@ -11,62 +10,55 @@ const roomSchema = new mongoose.Schema(
       required: true,
       trim: true,
       maxlength: 120,
+      index: true,
     },
 
     room_type: {
       type: Number,
       enum: Object.values(RoomTypes),
       required: true,
+      index: true,
     },
 
-    reward: {
-      type: Number,
-      required: true,
-      default: 0,
-      min: 0,
-    },
+    reward:   { type: Number, required: true, default: 0, min: 0 },
+    entry_fee:{ type: Number, required: true, default: 0, min: 0 },
 
-    entry_fee: {
-      type: Number,
-      required: true,
-      default: 0,
-      min: 0,
-    },
+    max_users:{ type: Number, required: true, min: 1 },
+    min_users:{ type: Number, required: true, min: 1 },
 
-    max_users: {
-      type: Number,
-      required: true,
-      min: 1,
-    },
-
-    min_users: {
-      type: Number,
-      required: true,
-      min: 1,
-    },
-
+    // Oda yaşam döngüsü
     room_status: {
       type: Number,
       enum: Object.values(EntryStatus),
       required: true,
+      index: true,
     },
+    starts_at: { type: Date, index: true },
+    ended_at:  { type: Date, index: true },
 
+    // Performans için cache (aktif rezervasyon sayısı)
+    active_reservation_count: { type: Number, default: 0, min: 0 },
   },
   {
-    timestamps: { createdAt: "created_at", updatedAt: "updated_at" },
+    timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
   }
 );
 
-// Mantıksal validasyonlar
-roomSchema.pre("validate", function (next) {
+// Mantıksal kontrol
+roomSchema.pre('validate', function (next) {
   if (this.min_users > this.max_users) {
-    return next(new Error("min_users, max_users değerinden büyük olamaz."));
+    return next(new CustomError('min_users, max_users değerinden büyük olamaz.'));
   }
   next();
 });
 
-// JSON çıktı: _id -> id
-roomSchema.set("toJSON", {
+// Sık sorgular için indeksler
+roomSchema.index({ room_status: 1, active_reservation_count: 1 });
+roomSchema.index({ room_status: 1, starts_at: 1 });
+roomSchema.index({ active_reservation_count: 1, max_users: 1 });
+
+// JSON: _id -> id
+roomSchema.set('toJSON', {
   virtuals: true,
   versionKey: false,
   transform: (_, ret) => {
@@ -76,5 +68,4 @@ roomSchema.set("toJSON", {
   },
 });
 
-module.exports = mongoose.model("Room", roomSchema);
-
+module.exports = mongoose.model('Room', roomSchema);

@@ -3,8 +3,6 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var {schedulerService} = require('./scheduler/SchedulerService');
-
 
 
 var app = express();
@@ -31,7 +29,6 @@ app.use(function (req, res, next) {
   next(createError(404));
 });
 
-schedulerService.start;
 // error handler
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
