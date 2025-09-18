@@ -8,7 +8,7 @@ const { HTTP_CODES } = require('../../config/Enum');
 exports.getAllReservations = async (req, res) => {
     try {
         // --- Tüm aktif rezervasyonları çek
-        const reservations = await RoomReservation.find({ active: true }).lean();
+        const reservations = await RoomReservation.find({ status: 0 }).lean();
 
         if (reservations.length === 0) {
             return res.status(HTTP_CODES.OK).json(

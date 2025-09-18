@@ -11,6 +11,7 @@ const {getAllReservations} = require('../controllers/roomReservation/getAllReser
 const {roomIsReserved} = require('../controllers/roomReservation/roomIsReserved');
 const {showRoom} = require('../controllers/roomReservation/showRoom');
 const {joinRoom} = require('../controllers/rooms/joinRoom');
+const { getRoomActiveReservations } = require('../controllers/roomReservation/getRoomActiveUsers');
 
 
 
@@ -19,6 +20,9 @@ router.all('*', Auth.authenticate(), (req, res, next) => next());
 router.get('/',getRooms);
 router.get('/getActiveReservations',getActiveReservations);
 router.get('/getAllReservations',getAllReservations);
+
+// ...
+router.get('/getRoomActiveReservations', getRoomActiveReservations);
 
 router.post('/reserveRoom', reserveRoom);
 router.post('/roomIsReserved',roomIsReserved)

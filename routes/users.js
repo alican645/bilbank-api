@@ -125,9 +125,11 @@ router.post('/register', async (req, res) => {
   }
 });
 
+
 router.all('*', Auth.authenticate(), async (req, res, next) => {
   next();
 })
+
 
 router.get('/', async (req, res, next) => {
   let users = await Users.find({});

@@ -37,7 +37,7 @@ const { sendNotification } = require('../controllers/notification/sendNotificati
 
 // ===================== Routes =====================
 // 📦 Kullanıcı İşlemleri
-router.get("/users", adminAuth, getAllUsers);
+router.get("/users", getAllUsers);
 router.get("/users/:userId", adminAuth, searchUser);
 router.delete("/users/:userId", adminAuth, deleteUser);
 router.put("/users/:userId/suspend", adminAuth, suspendUser);
